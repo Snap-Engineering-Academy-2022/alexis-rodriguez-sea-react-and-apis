@@ -1,17 +1,13 @@
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import './App.css';
-// import characters from './protagonists.json'
+import characters from './protagonists.json'
+import CharacterCard from './CharacterCard';
 
 function App() {
   return (
@@ -62,51 +58,19 @@ function App() {
           justifyContent="center"
           alignItems="flex-start"
         >
-          <Grid
-            item
-            xs={12}
-            md={4}
-          >
-            <Card>
-              <CardMedia
-                component="img"
-                height="350px"
-                image={"https://i.imgur.com/56chgMj.png"}
-              />
-              <CardHeader
-                title={"Miles Morales"}
-                titleTypographyProps={{ align: 'center' }}
-                sx={{ mt: 1 }}
-              />
-              <CardContent sx={{ pt: 0 }}>
-                <ul>
-                    <Typography component="li">
-                      Definitely Not Spiderman
-                    </Typography>
-                    <Typography component="li">
-                      "Lanky Puberty Boy" vibes
-                    </Typography>
-                    <Typography component="li">
-                      Can't do it on demand
-                    </Typography>
-                    <Typography component="li">
-                      Elite music taste
-                    </Typography>
-                </ul>
-              </CardContent>
-              <CardActions>
-                <Button 
-                  variant="contained"
-                  sx={{ px: 6, mx: 'auto' }}
-                  // I'm trying to use custom CSS defined in the file App.css,
-                  // but it isn't working. Why, and how can I fix it?
-                  className="characterButton"
+          {
+            characters.map((object) => {
+              return(
+                <Grid
+                  item
+                  xs={12}
+                  md={4}
                 >
-                  Vote
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
+                  <CharacterCard name={object.title} image={object.pic} descriptions={object.description} />
+                </Grid>
+              )
+            })
+          }
         </Grid>
       </Container>
     </div>
