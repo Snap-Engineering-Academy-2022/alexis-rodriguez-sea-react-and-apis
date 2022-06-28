@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,7 +10,38 @@ import './App.css';
 import characters from './protagonists.json'
 import CharacterCard from './CharacterCard';
 
+
+
+
+let apiUrl = "https://zoo-animal-api.herokuapp.com/animals/rand/6";
+
+var requestOptions = {
+  method: 'GET',
+  redirect: 'follow'
+};
+
+
 function App() {
+  const [animalData, setAnimalData] = useState([]);
+
+  function handleButtonClick(){
+    console.log("1 Before fetch -->")
+
+    fetch(apiUrl, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+          console.log(result);
+          setAnimalData(result);
+          console.log("3 Got animalData -->")
+        } 
+      )
+      .catch(error => console.log('error', error));
+
+    console.log("4 After fetch -->")
+  }
+
+  console.log( "just about to render", animalData)
+
   return (
     <div className="App">
       <CssBaseline />
@@ -27,9 +59,9 @@ function App() {
             href="#" 
             variant="outlined" 
             sx={{ my: 1, mx: 1.5 }}
-            onClick={() => alert("Boop!")}
+            onClick={() => handleButtonClick()}
           >
-            Button
+            FETCH
           </Button>
         </Toolbar>
       </AppBar>
@@ -59,18 +91,31 @@ function App() {
           alignItems="flex-start"
         >
           {
-            characters.map((object) => {
-              return(
-                <Grid
+            characters.map((object,index) =>
+                <Grid key={index}
                   item
                   xs={12}
                   md={4}
                 >
-                  <CharacterCard name={object.title} image={object.pic} descriptions={object.description} />
+                  <CharacterCard key={index} name={object.title} image={object.pic} descriptions={object.description} />
+                 
                 </Grid>
-              )
-            })
+            )
+
           }
+
+          {
+            animalData.map((object) => 
+              <Grid
+                item
+                xs={12}
+                md={4}
+              >
+                <CharacterCard name={object.name} image={object.image_link} descriptions={[object.habitat,object.diet,object.geo_range]} />
+              </Grid>
+            )
+          }
+
         </Grid>
       </Container>
     </div>
